@@ -1,0 +1,6 @@
+Check through the f5 link, work only on the active node
+F5 Urls:  https://wiki.cerner.com/pages/viewpage.action?spaceKey=ETSrvcs&title=F5%20URLs
+SSL Certificate WP for healtheintent URL's:  https://pages.github.cerner.com/ETS-Alpha/wiki/F5/renew_certificates_f5/
+
+
+# openssl pkcs12 -in patientportal.myhealthelife-dev.stonybrookmedicine.edu.key.pfx -nocerts -out key.pem
