@@ -1,0 +1,32 @@
+
+https://jira3.cerner.com/browse/ETSHIREQ-122618
+
+Follow below doc to renew cwert:
+Renew cert
+https://confluence.oraclecorp.com/confluence/display/OITGLOBAL/HOW-TO++Renew+an+existing+SSL+Server+certificate
+Follow below to create new cert:
+Create new cert
+https://confluence.oraclecorp.com/confluence/display/OITGLOBAL/HOW-TO++Request+a+new+SSL+Server+certificateOnce you get the certificate, download it.
+Download root and intermidiate cert from below url:  https://confluence.oraclecorp.com/confluence/display/OITGLOBAL/Production+Engineering+and+Operations+Certificate+Management+-+PKI+Store#ProductionEngineeringandOperationsCertificateManagementPKIStore-DownloadtheSHA-256DigicertPublicROOTandSHA-256IntermediateCAcertificatesGo to F5 and select ssl cert list and click on import cert. Paste the cert, intermediate and root certs in order.Once done, in F5, go to Local Traffic> Profiles>SSL client and edit the Cert key chain like below and update it.:If the SSL profile doesn’t exist create one. Refer any existing ssl client profile. Once created, go to Local host> virtual servers> virtual server list and search for the vip or the domain name…then add the ssl client which we created in ssl profile under configutaion tab.Now go to www.sslshopper.com/ and test the url.
+Browse the url in incognito and check for cert details.If the DNS is private, go to the jumpserver and check using below command:
+ openssl s_client -connect xyz.tableaugateway.us-zone0.healtheintent.net:443openssl s_client -servername tableaugateway.us-zone0.healtheintent.net -connect 443 2>/dev/null | openssl x509 -noout -datesecho | openssl s_client -showcerts -servername tableaugateway.us-zone0.healtheintent.net -connect tableaugateway.us-zone0.healtheintent.net:443 | openssl x509 -noout -dates
+
+
+openssl s_client -connect testing.healthelife-allergies.us-staging-1.healtheintent.com:443 -servername testing.healthelife-allergies.us-staging-1.healtheintent.com
+
+LOB - cerner
+Location - US
+
+	CSSAP: CSSAP# 113248
+
+
+
+https://7.197.224.16/xui/
+https://kc1dmz-lb-02.cernerasp.com/xui/ 
+https://7.202.0.50/xui/
+
+
+
+
+https://oracle-my.sharepoint.com/:x:/p/nathan_weathersbee/EbkQNTmSAkxEkOa3fgsbE-oBE-QeRwGZ8uZPAut71WGS3g?e=paQ6ej
+
