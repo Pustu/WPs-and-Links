@@ -1,0 +1,44 @@
+https://jira3.cerner.com/browse/ETSHIREQ-81874
+https://gist.github.cerner.com/ap094289/83e935af9cca313f3585b29dfb38dd61 -> WP
+
+
+
+https://jira3.cerner.com/browse/ETSHIREQ-106007
+
+
+
+Here's the WP i follow
+ 
+	1. Login to respective F5
+	Local Traffic --> Virtual Servers --> Virtual Servers list -->
+	We can find the VIP by Searching for the *vanity* under cloud partition
+	Select the one with 443, check the number of ssl profiles. If < 20 --> OKAY. Or else, new VIP is required.
+	Once we know that for our VIP on f5 that have a space for new url, we have to create a PR(one for session-api and one for terraform config) and CRQ for the jira
+	2. Create a PR for session-api
+
+
+	 
+	We have to add the url at the end in the iRule, create a PR.
+	After it is merged, we can add that to f5
+	Local Traffic --> iRule --> iRule list
+	Select cloud partition, search for the *manual* , select the one with prod, add the lines at bottom as per KT, then click on Update.
+	1. Generate a CSR (if asked)
+	Login to f5 --> System --> Certificate Management --> Traffic Certificate Management --> SSL Certificate List
+	Click on create (at top right) --> Fill the details as mentioned by reporter, and click finished. Download the csr and send to reporter. And get the certs.
+	Import the certificates
+	System --> Certificate Management --> Traffic Certificate Management --> SSL Certificate List --> Click on import.
+	 
+	2. Terraform PR will be creating the ssl profile as well as associating that ssl profile to the VIP
+	For ssl profile, terraform-f5 --> respective environment --> 02 folder (for second vip), open client_profile.tf, work on it(KT), open virtual_server.tf, work on it(KT) --> append our ssl profile to the end of the client profile.
+	https://github.cerner.com/ETS-Alpha/terraform-f5/pull/69/files
+	Make changes to the tf files using the above PR as referance, give terraforn plan, save output to a gist (mention this gist in PR),
+	Create a terraform PR.
+	After it is merged, update parameters in common.auto.tfvars file(password can be found at ets_alpha_secrets --> cernerasp.com -->  svcetsalphaf5terrafo, make sure to give active f5). So, once the PR is merged and we have our credentials on our local branch ready to run, navigate to the directory where our tf files are present(prd/loadbalan/django…_02), login to awscli_setup --> login --> cernaws-duo --> export profile 
+	give terraform apply. Sync changes in f5.
+	Update in Jira
+	3. Ask the client to create DNS A record.
+	4. Validation Steps 
+		1. $ nslookup the url we provided for DNS A record creation.
+		2. SSL Shopper
+		3. https://jira3.cerner.com/browse/ETSHIREQ-79583
+
